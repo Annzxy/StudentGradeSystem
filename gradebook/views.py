@@ -31,7 +31,7 @@ def semester_detail(request, id):
             return Response(serializer.data)
         return Response(serializer.errors)
 
-    elif request.method =="DELETE":
+    elif request.method == "DELETE":
         semester.delete()
         return Response("Deleted")
 
