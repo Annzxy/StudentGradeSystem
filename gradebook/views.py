@@ -1,11 +1,14 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from gradebook.models import Semester, StudentEnrollment, Lecturer, Course, Classroom, Student
 from gradebook.serializers import SemesterSerializer, CourseSerializer, LecturerSerializer, ClassroomSerializer, \
     StudentSerializer, StudentEnrollmentSerializer
-
+import pandas as pd
+from django.contrib.auth.models import User
+from django.core.files.storage import FileSystemStorage
 
 @api_view(['GET'])
 def index(request):
@@ -249,3 +252,60 @@ def studentEnrollment_detail(request, id):
     elif request.method == "DELETE":
         studentEnrollment.delete()
         return Response("Deleted")
+
+@api_view(['POST'])
+def readExcelFile(request):
+    if request.method == "POST" and request.FILES["myfile"]:
+        myfile = request.FILES["myfile"]
+
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        upload_file_url = fs.url(filename)
+        excel_data = pd.read_excel(myfile)
+        data = pd.DataFrame(excel_data)
+        usernames = data["username"].tolist()
+        dobs = data["DOB"].tolist()
+        firstnames = data["firstname"].tolist()
+        lastnames = data["lastname"].tolist()
+        emails = data["email"].tolist()
+        i = 0
+        while i < len(usernames):
+            username = usernames[i]
+            dob = dobs[i]
+            firstname = firstnames[i]
+            lastname = lastnames[i]
+            email = emails[i]
+            password = "unitec123"
+            user = User.objects.create(username=username, password=password, first_name=firstname,
+                                       last_name=lastname, email=email)
+            user.groups.add(1)
+            i = i + 1
+        return render(request, 'upload_file.html', {
+            "upload_file_url": upload_file_url
+        })
+    return render(request, 'upload_file.html')
+
+@api_view(['POST'])
+def sendEmail(request):
+    users = User.objects.all()
+    if request.method == "POST":
+        subject = request.POST.get("subject")
+        body = request.POST.get("body")
+        receiver = User.objects.get(id = request.POST.get("user"))
+        senderEmail = "kilizxy@gmail.com"
+        try:
+            send_mail(subject, body, senderEmail, [receiver.email],
+                      fail_silently=False)
+            return render(request, "emailsending.html", {
+                "message": "email has been sent out",
+                "users": users
+            })
+        except:
+            return render(request, "emailsending.html", {
+                "message": "email sending failed",
+                "users": users
+            })
+    return render(request, "emailsending.html", {
+        "message": "",
+        "users": users
+    })

@@ -7,7 +7,7 @@ from gradebook.models import Semester, StudentEnrollment, Lecturer, Course, Clas
 class SemesterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Semester
-        fields = ['year', 'semester_number']
+        fields = ['year', 'semester_number', 'id']
 
 class UserSerializer(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
