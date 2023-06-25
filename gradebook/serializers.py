@@ -30,25 +30,25 @@ class UserSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ['course_code', 'course_name', 'semesters']
+        fields = ['id', 'course_code', 'course_name', 'semesters']
 
 
 class LecturerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lecturer
-        fields = ['staff_ID', 'first_name', 'last_name', 'email', 'courses', 'dob']
+        fields = ['id', 'staff_ID', 'first_name', 'last_name', 'email', 'courses', 'dob']
 
 class ClassroomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Classroom
-        fields = ['classroom_number', 'semester', 'course', 'lecturer']
+        fields = ['id', 'classroom_number', 'semester', 'course', 'lecturer']
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ['student_ID', 'first_name', 'last_name', 'email', 'dob']
+        fields = ['id', 'student_ID', 'first_name', 'last_name', 'email', 'dob']
 
 class StudentEnrollmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentEnrollment
-        fields = ['student_ID', 'class_enrolled', 'grade', 'enroll_time', 'grade_time']
+        fields = ['id', 'student_ID', 'class_enrolled', 'grade', 'enroll_time', 'grade_time']

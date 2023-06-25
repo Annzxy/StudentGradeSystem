@@ -217,13 +217,13 @@ def student_detail(request, id):
 @api_view(['GET', 'POST'])
 def studentEnrollment_list(request):
     if request.method == 'GET':
-        studentEnrollment = Student.objects.all()
-        serializer = StudentSerializer(studentEnrollment, many=True)
+        studentEnrollment = StudentEnrollment.objects.all()
+        serializer = StudentEnrollmentSerializer(studentEnrollment, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
         data = request.data
         print(data)
-        serializer = StudentSerializer(data=data)
+        serializer = StudentEnrollmentSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)

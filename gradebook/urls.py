@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 from gradebook.views import semester_list, index, semester_detail, course_list, course_detail, lecturer_list, \
     lecturer_detail, classroom_list, classroom_detail, student_list, student_detail, studentEnrollment_list, \
-    studentEnrollment_detail
+    studentEnrollment_detail, readExcelFile, sendEmail
 from gradebook.viewsets import SemesterViewSet, UserViewSet
 
 router = DefaultRouter()
@@ -23,8 +23,10 @@ urlpatterns = [
     path('classroom_detail/<int:id>/', classroom_detail),
     path('student/', student_list),
     path('student_detail/<int:id>/', student_detail),
-    path('studentEnrollment', studentEnrollment_list),
-    path('student_detail/<int:id>/', studentEnrollment_detail),
+    path('studentEnrollment/', studentEnrollment_list),
+    path('studentEnrollment_detail/<int:id>/', studentEnrollment_detail),
+    path('file_upload/', readExcelFile),
+    path('email/', sendEmail),
 
 
     path("", include(router.urls))
