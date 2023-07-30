@@ -148,7 +148,7 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 ]
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
-EMAIL_HOST_PASSWORD = "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"
+EMAIL_HOST_USER = 'apikey' 
+EMAIL_HOST_PASSWORD = ""
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
